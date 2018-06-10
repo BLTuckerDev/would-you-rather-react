@@ -113,3 +113,14 @@ li {
   border-radius: 3px;
   cursor: pointer;
 }
+
+.questionBox {
+  width: 100%;
+  max-width: 250px;
+  padding: 10px;
+  text-align: center;
+  margin: 0 auto;
+  border: 1px solid #dad7d7;
+  border-radius: 3px;
+  cursor: pointer;
+}
