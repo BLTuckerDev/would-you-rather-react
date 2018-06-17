@@ -1,8 +1,18 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
+import {setLoggedInUser} from "../actions/LoggedInUser";
 
 
 class Login extends Component {
+
+    handleLoginClick = (user) => {
+
+        const {dispatch, history} = this.props;
+
+        dispatch(setLoggedInUser(user));
+
+        history.push("/");
+    };
 
 
     render() {
@@ -15,7 +25,7 @@ class Login extends Component {
                 <ul>
                     {users.map((user) => (
                         <li key={user.id}>
-                            <div className="loginBox">
+                            <div className="loginBox" onClick={(e) => this.handleLoginClick(user)}>
                                 <img src={user.avatarURL}
                                      className="avatar"
                                 />

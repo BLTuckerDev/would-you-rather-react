@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {NavLink, withRouter} from 'react-router-dom'
-import Leaderboard from "./Leaderboard";
 import LoggedInUserInfo from "./LoggedInUserInfo";
+import {setLoggedInUser} from "../actions/LoggedInUser";
 
 
 class Navigation extends Component {
@@ -10,9 +10,14 @@ class Navigation extends Component {
     loginOrOutButtonClick = (e) => {
         e.preventDefault();
 
-        //TODO
-        //decide whether we are logging in or out based on props
-    }
+        const {loggedInUser, history, dispatch} = this.props;
+
+        if(loggedInUser){
+            dispatch(setLoggedInUser(null))
+        }
+
+        history.push("/login")
+    };
 
     render() {
         const {loggedInUser} = this.props;
@@ -26,9 +31,9 @@ class Navigation extends Component {
             <nav className='nav'>
 
                 <ul>
-                    <li>
+                    {loggedInUser && (<li>
                         <LoggedInUserInfo/>
-                    </li>
+                    </li>)}
                     <li style={navItem}>
                         <NavLink to='/'
                                  exact
@@ -60,20 +65,6 @@ class Navigation extends Component {
 
 
 function mapStateToProps({loggedInUser}) {
-    //TODO Replace with real user when connected
-
-    loggedInUser = {
-        id: 'sarahedo',
-        name: 'Sarah Edo',
-        avatarURL: 'https://tylermcginnis.com/would-you-rather/sarah.jpg',
-        answers: {
-            "8xf0y6ziyjabvozdd253nd": 'optionOne',
-            "6ni6ok3ym7mf1p33lnez": 'optionOne',
-            "am8ehyc8byjqgar0jgpub9": 'optionTwo',
-            "loxhs1bqm25b708cmbf3g": 'optionTwo'
-        },
-        questions: ['8xf0y6ziyjabvozdd253nd', 'am8ehyc8byjqgar0jgpub9']
-    };
 
     return {
         loggedInUser

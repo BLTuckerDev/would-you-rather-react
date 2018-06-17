@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import QuestionDetail from "./QuestionDetail";
 import Question from "./Question";
+import {Redirect} from "react-router-dom";
 
 //TODO ORder polls from most recently created to least recently created
 
@@ -27,9 +28,14 @@ class Home extends Component {
     render() {
 
         const {currentTab} = this.state;
-        const {answeredQuestions, unansweredQuestions} = this.props;
+        const {loggedInUser, answeredQuestions, unansweredQuestions} = this.props;
 
         const questionsToDisplay = currentTab === "answered" ? answeredQuestions : unansweredQuestions;
+
+        if(!loggedInUser){
+            return <Redirect to="/login"/>
+        }
+
 
         return (
             <div className="center">
@@ -63,19 +69,19 @@ function mapStateToProps({questions, loggedInUser}) {
 
     //TODO replace with real questions
     //TODO replace with real loggedInUser
-
-    loggedInUser = {
-        id: 'sarahedo',
-        name: 'Sarah Edo',
-        avatarURL: 'https://tylermcginnis.com/would-you-rather/sarah.jpg',
-        answers: {
-            "8xf0y6ziyjabvozdd253nd": 'optionOne',
-            "6ni6ok3ym7mf1p33lnez": 'optionOne',
-            "am8ehyc8byjqgar0jgpub9": 'optionTwo',
-            "loxhs1bqm25b708cmbf3g": 'optionTwo'
-        },
-        questions: ['8xf0y6ziyjabvozdd253nd', 'am8ehyc8byjqgar0jgpub9']
-    };
+    //
+    // loggedInUser = {
+    //     id: 'sarahedo',
+    //     name: 'Sarah Edo',
+    //     avatarURL: 'https://tylermcginnis.com/would-you-rather/sarah.jpg',
+    //     answers: {
+    //         "8xf0y6ziyjabvozdd253nd": 'optionOne',
+    //         "6ni6ok3ym7mf1p33lnez": 'optionOne',
+    //         "am8ehyc8byjqgar0jgpub9": 'optionTwo',
+    //         "loxhs1bqm25b708cmbf3g": 'optionTwo'
+    //     },
+    //     questions: ['8xf0y6ziyjabvozdd253nd', 'am8ehyc8byjqgar0jgpub9']
+    // };
 
     questions = {
         "8xf0y6ziyjabvozdd253nd": {
@@ -159,14 +165,15 @@ function mapStateToProps({questions, loggedInUser}) {
     };
 
     const answeredQuestions = Object.keys(questions)
-        .filter((questionId) => Object.keys(loggedInUser.answers).includes(questionId));
+        .filter((questionId) => Object.keys(loggedInUser ? loggedInUser.answers : {}).includes(questionId));
 
     const unansweredQuestions = Object.keys(questions)
-        .filter((questionId) => !Object.keys(loggedInUser.answers).includes(questionId));
+        .filter((questionId) => !Object.keys(loggedInUser ? loggedInUser.answers : {}).includes(questionId));
 
     console.log(`answered count: ${answeredQuestions}`);
     console.log(`unanswered count: ${unansweredQuestions}`);
     return {
+        loggedInUser,
         answeredQuestions,
         unansweredQuestions
     }
