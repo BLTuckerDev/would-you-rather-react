@@ -2,18 +2,17 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 
 
+class Leaderboard extends Component {
 
-class Leaderboard extends Component{
 
-
-    render(){
+    render() {
 
         const {users} = this.props
 
 
-        return(
+        return (
             <div className="center">
-                <h3>Please Select Your Account</h3>
+                <h3>Most Active</h3>
                 <ul>
                     {users.map((user) => (
                         <li key={user.id}>
@@ -34,7 +33,7 @@ class Leaderboard extends Component{
 }
 
 
-function mapStateToProps({users}){
+function mapStateToProps({users}) {
 
     //TODO Replace with real users from the store
     users = [
@@ -74,7 +73,7 @@ function mapStateToProps({users}){
     ];
 
     return {
-        users: users.sort((a,b) => (Object.keys(b.answers).length + b.questions.length) - (Object.keys(a.answers).length + a.questions.length))
+        users: users.sort((a, b) => (Object.keys(b.answers).length + b.questions.length) - (Object.keys(a.answers).length + a.questions.length))
     }
 }
 
