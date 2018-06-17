@@ -12,7 +12,7 @@ class QuestionDetail extends Component {
                 <br/>
                 <div className={(loggedInUser.answers[question.id] === "optionOne" ? "answerBox" : "questionBox")}>
                     <h3>{question.optionOne.text}</h3>
-                    <p>{`${(optionOneVotes/totalVotes) * 100}% of votes`}</p>
+                    <p>{`${((optionOneVotes/totalVotes) * 100).toFixed(2)}% of votes`}</p>
                     <p>{`Total Votes: ${optionOneVotes}`}</p>
                 </div>
                 <br/>
@@ -20,7 +20,7 @@ class QuestionDetail extends Component {
                 <br/>
                 <div className={(loggedInUser.answers[question.id] === "optionTwo" ? "answerBox" : "questionBox")}>
                     <h3>{question.optionTwo.text}</h3>
-                    <p>{`${(optionTwoVotes/totalVotes) * 100}% of votes`}</p>
+                    <p>{`${((optionTwoVotes/totalVotes) * 100).toFixed(2)}% of votes`}</p>
                     <p>{`Total Votes: ${optionTwoVotes}`}</p>
                 </div>
             </div>
@@ -32,15 +32,12 @@ class QuestionDetail extends Component {
 function mapStateToProps({questions, users, loggedInUser}, props) {
     const {questionId} = props;
 
-    Object.keys(users)
-        .forEach((user) => console.log(`user: ${user}`))
-
     const totalVotes = Object.keys(users)
         .map(userKey => users[userKey].answers)
         .filter(answers => answers[questionId])
         .length;
 
-    const question = questions[questionId]
+    const question = questions[questionId];
     return {
         loggedInUser,
         question,

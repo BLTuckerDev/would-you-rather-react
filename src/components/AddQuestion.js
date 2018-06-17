@@ -1,28 +1,14 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
+import {handleAddingNewQuestion} from "../actions/Questions";
 
-/*
-The form is available at/add.
-The application shows the text “Would You Rather” and has a form for creating two options.
-Upon submitting the form, a new poll is created and the user is taken to the home page.
-The new polling question appears in the correct category on the home page.
- */
 
 class AddQuestion extends Component {
     state = {
-        questionText: '',
         optionOneText: '',
         optionTwoText: '',
         toHome: false
-    };
-
-    handleQuestionChange = (e) => {
-        const questionText = e.target.value;
-
-        this.setState(() => ({
-            questionText
-        }));
     };
 
     handleOption1Change = (e) => {
@@ -44,13 +30,12 @@ class AddQuestion extends Component {
     handleSubmit = (e) => {
         e.preventDefault();
 
-        //todo get question data from state
+        const {optionOneText, optionTwoText} = this.state;
+        const {dispatch} = this.props;
 
-
-        //todo dispatch the add question action
+        dispatch(handleAddingNewQuestion(optionOneText, optionTwoText));
 
         this.setState(() => ({
-            questionText: '',
             optionOneText: '',
             optionTwoText: '',
             toHome: true
@@ -60,7 +45,12 @@ class AddQuestion extends Component {
 
     render() {
 
-        const {toHome, questionText, optionOneText, optionTwoText} = this.state;
+        const {toHome, optionOneText, optionTwoText} = this.state;
+        const {loggedInUser} = this.props;
+
+        if (!loggedInUser) {
+            return <Redirect to="/login"/>
+        }
 
         if (toHome === true) {
             return <Redirect to="/"/>
@@ -71,10 +61,6 @@ class AddQuestion extends Component {
             <div className="center">
                 <h3>Would You Rather?</h3>
                 <form onSubmit={this.handleSubmit}>
-                    <labe>Question: <input type="text"
-                                           name="question"
-                                           onChange={this.handleQuestionChange}
-                                           value={questionText}/></labe>
                     <br/>
                     <label>Option 1: <input type="text"
                                             name="option1"
@@ -88,7 +74,7 @@ class AddQuestion extends Component {
                     <br/>
                     <button className="btn"
                             type="submit"
-                            disabled={questionText === '' || optionOneText === '' || optionTwoText === ''}>
+                            disabled={optionOneText === '' || optionTwoText === ''}>
                         Submit
                     </button>
                 </form>
@@ -97,5 +83,12 @@ class AddQuestion extends Component {
     }
 }
 
+function mapStateToProps({loggedInUser}) {
 
-export default connect()(AddQuestion)
+    return {
+        loggedInUser
+    }
+}
+
+
+export default connect(mapStateToProps)(AddQuestion)
