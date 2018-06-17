@@ -4,8 +4,6 @@ import QuestionDetail from "./QuestionDetail";
 import Question from "./Question";
 import {Redirect} from "react-router-dom";
 
-//TODO ORder polls from most recently created to least recently created
-
 class Home extends Component {
 
     state = {
@@ -25,7 +23,6 @@ class Home extends Component {
     };
 
     handleOnQuestionClick = (e, questionId) =>{
-        console.log("click");
         e.preventDefault();
         const {history} = this.props;
         history.push(`/questions/${questionId}`)
@@ -81,13 +78,13 @@ function mapStateToProps({questions, loggedInUser}) {
     }
 
     const answeredQuestions = Object.keys(questions)
-        .filter((questionId) => Object.keys(loggedInUser ? loggedInUser.answers : {}).includes(questionId));
+        .filter((questionId) => Object.keys(loggedInUser ? loggedInUser.answers : {}).includes(questionId))
+        .sort((a,b) => questions[b].timestamp - questions[a].timestamp);
 
     const unansweredQuestions = Object.keys(questions)
-        .filter((questionId) => !Object.keys(loggedInUser ? loggedInUser.answers : {}).includes(questionId));
+        .filter((questionId) => !Object.keys(loggedInUser ? loggedInUser.answers : {}).includes(questionId))
+        .sort((a,b) => questions[b].timestamp - questions[a].timestamp);
 
-    console.dir(unansweredQuestions)
-    console.dir(answeredQuestions);
     return {
         loggedInUser,
         answeredQuestions,

@@ -47,15 +47,13 @@ class App extends Component {
     }
 }
 
-function mapStateToProps({loggedInUser}) {
+function mapStateToProps({users}) {
 
-    //TODO determine loading based on actual data loading status
     return {
-        loading: false
+        loading: users == null
     }
 
 }
 
 
-//to get access to dispatch we need to make sure we use connect. from react-redux
 export default connect(mapStateToProps)(App);
