@@ -27,16 +27,11 @@ class Question extends Component {
 
     render() {
 
-        const {question, users} = this.props;
+        const {question} = this.props;
 
         return (
             <div className="center">
                 <h2>Would you rather?</h2>
-                <p>Asked By:</p>
-                <img src={users[question.author].avatarURL}
-                     className="smallAvatar"
-                />
-                <br/>
                 <form className="question" onSubmit={this.handleSubmit}>
                     <div>
                         <input type="radio"
@@ -77,8 +72,7 @@ function mapStateToProps({questions, users}, props) {
     const {questionId} = props;
 
     return {
-        question: questions[questionId],
-        users
+        question: questions[questionId]
     }
 }
 

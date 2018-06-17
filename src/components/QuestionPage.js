@@ -9,7 +9,7 @@ class QuestionPage extends Component {
 
     render() {
 
-        const{question, loggedInUser} = this.props;
+        const{question, loggedInUser, users} = this.props;
 
         if(!loggedInUser){
             return <Redirect to="/login"/>
@@ -28,6 +28,11 @@ class QuestionPage extends Component {
 
         return(
             <div className="center">
+                <p>Asked By:</p>
+                <img src={users[question.author].avatarURL}
+                     className="smallAvatar"
+                />
+                <br/>
                 {isAnswered ?
                 <QuestionDetail questionId={question.id} /> :
                 <Question questionId={question.id} />}
@@ -36,13 +41,14 @@ class QuestionPage extends Component {
     }
 }
 
-function mapStateToProps({questions, loggedInUser}, props){
+function mapStateToProps({questions, loggedInUser, users}, props){
 
     const {questionId} = props.match.params;
 
     return{
         question: questions ? questions[questionId] : null,
-        loggedInUser
+        loggedInUser,
+        users
     }
 }
 

@@ -10,8 +10,6 @@ import Home from "./Home";
 import QuestionPage from "./QuestionPage";
 import {loadInitialData} from "../actions/shared";
 
-//TODO Review rubric one more time
-
 class App extends Component {
 
     componentDidMount() {
