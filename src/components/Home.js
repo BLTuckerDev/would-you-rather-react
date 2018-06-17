@@ -66,6 +66,10 @@ class Home extends Component {
 
 function mapStateToProps({questions, loggedInUser}) {
 
+    if(!questions){
+        questions = [];
+    }
+
     const answeredQuestions = Object.keys(questions)
         .filter((questionId) => Object.keys(loggedInUser ? loggedInUser.answers : {}).includes(questionId));
 
