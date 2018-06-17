@@ -27,13 +27,13 @@ class Question extends Component {
 
     render() {
 
-        const {question, loggedInUser} = this.props;
+        const {question, users} = this.props;
 
         return (
             <div className="center">
                 <h2>Would you rather?</h2>
                 <p>Asked By:</p>
-                <img src={loggedInUser.avatarURL}
+                <img src={users[question.author].avatarURL}
                      className="smallAvatar"
                 />
                 <br/>
@@ -72,13 +72,13 @@ class Question extends Component {
 }
 
 
-function mapStateToProps({questions, loggedInUser}, props) {
+function mapStateToProps({questions, users}, props) {
 
     const {questionId} = props;
 
     return {
         question: questions[questionId],
-        loggedInUser,
+        users
     }
 }
 
