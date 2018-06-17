@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {NavLink} from 'react-router-dom'
+import {NavLink, withRouter} from 'react-router-dom'
 import Leaderboard from "./Leaderboard";
 import LoggedInUserInfo from "./LoggedInUserInfo";
 
@@ -81,4 +81,4 @@ function mapStateToProps({loggedInUser}) {
 }
 
 
-export default connect(mapStateToProps)(Navigation);
+export default withRouter(connect(mapStateToProps)(Navigation));
