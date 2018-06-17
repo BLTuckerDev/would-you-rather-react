@@ -22,7 +22,7 @@ class Question extends Component {
         const {question, history, dispatch} = this.props;
 
         dispatch(handleAnsweringAQuestion(question, currentAnswer));
-        history.push("/")
+        history.push("/");
     };
 
     render() {

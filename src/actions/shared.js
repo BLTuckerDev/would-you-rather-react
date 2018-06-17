@@ -5,7 +5,7 @@ import {loadQuestions} from "./Questions";
 
 export function loadInitialData() {
     return (dispatch) => {
-        dispatch(showLoading())
+        dispatch(showLoading());
         return Promise.all([
             _getUsers(),
             _getQuestions()
@@ -17,7 +17,7 @@ export function loadInitialData() {
             .then(({users, questions}) => {
                 dispatch(loadUsers(users));
                 dispatch(loadQuestions(questions));
-                dispatch(hideLoading())
+                dispatch(hideLoading());
             });
     }
 }

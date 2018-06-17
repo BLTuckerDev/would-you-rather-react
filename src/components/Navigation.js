@@ -13,10 +13,10 @@ class Navigation extends Component {
         const {loggedInUser, history, dispatch} = this.props;
 
         if(loggedInUser){
-            dispatch(setLoggedInUser(null))
+            dispatch(setLoggedInUser(null));
         }
 
-        history.push("/login")
+        history.push("/login");
     };
 
     render() {

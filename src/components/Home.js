@@ -26,7 +26,7 @@ class Home extends Component {
         e.preventDefault();
         const {history} = this.props;
         history.push(`/questions/${questionId}`)
-    }
+    };
 
     render() {
 
@@ -70,8 +70,6 @@ class Home extends Component {
 
 
 function mapStateToProps({questions, loggedInUser}) {
-
-    console.log("home map state");
 
     if(!questions){
         questions = [];

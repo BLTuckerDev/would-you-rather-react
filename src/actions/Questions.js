@@ -40,7 +40,7 @@ export function handleAnsweringAQuestion(question, option) {
             answer: option
         })
             .then(({questions, users}) => {
-                dispatch(setLoggedInUser(users[loggedInUser.id]))
+                dispatch(setLoggedInUser(users[loggedInUser.id]));
                 dispatch(loadUsers(users));
                 dispatch(loadQuestions(questions));
                 dispatch(hideLoading());
