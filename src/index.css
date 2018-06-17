@@ -149,3 +149,18 @@ li {
   margin: 0 5px 0 0;
   vertical-align: center;
 }
+
+.tab {
+  border-bottom: black 1px solid;
+}
+
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 17px;
+}

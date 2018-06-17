@@ -150,12 +150,9 @@ function mapStateToProps({questions, users}, props) {
                 text: 'write Swift'
             }
         },
-    }
+    };
 
-    //const {questionId} = props.match.params
-    //const question = questions[questionId];
-
-    const questionId = "xj352vofupe1dqz9emx13r";
+    const {questionId} = props || props.match.params;
 
     Object.keys(users)
         .forEach((user) => console.log(`user: ${user}`))
@@ -167,22 +164,7 @@ function mapStateToProps({questions, users}, props) {
 
     console.log(`Total Votes: ${totalVotes}`);
 
-    //TODO replace with real question
-    let question = {
-        id: 'xj352vofupe1dqz9emx13r',
-        author: 'johndoe',
-        timestamp: 1493579767190,
-        optionOne: {
-            votes: ['johndoe'],
-            text: 'write JavaScript',
-        },
-        optionTwo: {
-            votes: ['tylermcginnis'],
-            text: 'write Swift'
-        }
-    };
-
-
+    const question = questions[questionId]
     return {
         question,
         optionOneVotes: question.optionOne.votes.length,

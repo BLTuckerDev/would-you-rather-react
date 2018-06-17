@@ -9,6 +9,7 @@ import Question from "./Question";
 import LoggedInUserInfo from "./LoggedInUserInfo";
 import Navigation from "./Navigation";
 import AddQuestion from "./AddQuestion";
+import Home from "./Home";
 
 //TODO Review rubric one more time
 
@@ -29,6 +30,7 @@ class App extends Component {
                           : <div>
                               <Route path="/leaderboard" exact component={Leaderboard}/>
                               <Route path="/add" exact component={AddQuestion}/>
+                              <Route path="/" exact component={Home}/>
                           </div>}
 
                   </div>

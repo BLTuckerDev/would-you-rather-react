@@ -1,83 +1,80 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
+import QuestionDetail from "./QuestionDetail";
+import Question from "./Question";
 
 
-class Question extends Component {
+class Home extends Component {
 
     state = {
-        currentAnswer: null,
-    };
+        currentTab: "unanswered",
+    }
 
-    onAnswerChanged = (e) => {
-        console.log("onAnswerChanged");
-        console.dir(e)
-        this.setState({
-            currentAnswer: e.target.value === "option1"
-                ? this.props.question.optionOne
-                : this.props.question.optionTwo
-        });
-    };
+    showAnsweredQuestions = (e) => {
+        this.setState(() => ({
+            currentTab: "answered"
+        }))
+    }
 
-    handleSubmit = (e) => {
-        e.preventDefault();
+    showUnansweredQuestions = (e) => {
+        this.setState(() => ({
+            currentTab: "unanswered"
+        }))
+    }
 
-        const {currentAnswer} = this.state;
-
-        console.log("Answering question");
-
-        //TODO Dispatch answering the question
-        //TODO reset state? navigate away?
-
-    };
 
     render() {
 
-        const {question, loggedInUser} = this.props;
+        const {currentTab} = this.state;
+        const {answeredQuestions, unansweredQuestions} = this.props;
+
+        const questionsToDisplay = currentTab === "answered" ? answeredQuestions : unansweredQuestions;
 
         return (
             <div className="center">
-                <h2>Would you rather?</h2>
-                <br/>
-                <form className="question" onSubmit={this.handleSubmit}>
-                    <div>
-                        <input type="radio"
-                               checked={this.state.currentAnswer === question.optionOne}
-                               id="option1"
-                               name="option1"
-                               onChange={this.onAnswerChanged}
-                               value="option1"/>
-                        <label for="option1">{question.optionOne.text}</label>
-
-                        <h2>OR</h2>
-
-                        <input checked={this.state.currentAnswer === question.optionTwo}
-                               type="radio"
-                               id="option2"
-                               name="option2"
-                               onChange={this.onAnswerChanged}
-                               value="option2"/>
-                        <label for="option2">{question.optionTwo.text}</label>
-                    </div>
-
-                    <button className="btn"
-                            type="submit"
-                            disabled={!this.state.currentAnswer}>
-                        Submit
+                <div className="tab">
+                    <button className={currentTab === "unanswered" ? "active" : null}
+                            onClick={this.showUnansweredQuestions}>Unanswered Questions
                     </button>
-                </form>
-
+                    <button className={currentTab === "answered" ? "active" : null}
+                            onClick={this.showAnsweredQuestions}>Answered Questions
+                    </button>
+                </div>
+                <br/>
+                <ul className="center">
+                    {questionsToDisplay.map((questionId) => (
+                        <li key={questionId}>
+                            {questionsToDisplay === answeredQuestions ?
+                                <QuestionDetail questionId={questionId}/> :
+                                <Question questionId={questionId}/>}
+                        </li>
+                    ))}
+                </ul>
             </div>
         )
+
     }
 
 }
 
 
-function mapStateToProps({questions, loggedInUser}, props) {
+function mapStateToProps({questions, loggedInUser}) {
 
-    //TODO Undo the comments and use real data when the store is hooked up
-    const {questionId} = props || props.match.params;
+    //TODO replace with real questions
+    //TODO replace with real loggedInUser
 
+    loggedInUser = {
+        id: 'sarahedo',
+        name: 'Sarah Edo',
+        avatarURL: 'https://tylermcginnis.com/would-you-rather/sarah.jpg',
+        answers: {
+            "8xf0y6ziyjabvozdd253nd": 'optionOne',
+            "6ni6ok3ym7mf1p33lnez": 'optionOne',
+            "am8ehyc8byjqgar0jgpub9": 'optionTwo',
+            "loxhs1bqm25b708cmbf3g": 'optionTwo'
+        },
+        questions: ['8xf0y6ziyjabvozdd253nd', 'am8ehyc8byjqgar0jgpub9']
+    };
 
     questions = {
         "8xf0y6ziyjabvozdd253nd": {
@@ -160,10 +157,19 @@ function mapStateToProps({questions, loggedInUser}, props) {
         },
     };
 
+    const answeredQuestions = Object.keys(questions)
+        .filter((questionId) => Object.keys(loggedInUser.answers).includes(questionId));
+
+    const unansweredQuestions = Object.keys(questions)
+        .filter((questionId) => !Object.keys(loggedInUser.answers).includes(questionId));
+
+    console.log(`answered count: ${answeredQuestions}`)
+    console.log(`unanswered count: ${unansweredQuestions}`)
     return {
-        question: questions[questionId],
-        loggedInUser,
+        answeredQuestions,
+        unansweredQuestions
     }
+
 }
 
-export default connect(mapStateToProps)(Question)
+export default connect(mapStateToProps)(Home);
