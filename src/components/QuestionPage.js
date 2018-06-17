@@ -1,85 +1,51 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
+import QuestionDetail from "./QuestionDetail";
+import Question from "./Question";
 
-//TODO Show picture of whoever asked the question
 
+//TODO If there is no logged in user they should be redirected to the login page
+//TODO ask the user to sign in and show a 404 page if the question id does not exist
+class QuestionPage extends Component {
 
-class Question extends Component {
-
-    state = {
-        currentAnswer: null,
-    };
-
-    onAnswerChanged = (e) => {
-        console.log("onAnswerChanged");
-        console.dir(e)
-        this.setState({
-            currentAnswer: e.target.value === "option1"
-                ? this.props.question.optionOne
-                : this.props.question.optionTwo
-        });
-    };
-
-    handleSubmit = (e) => {
-        e.preventDefault();
-
-        const {currentAnswer} = this.state;
-
-        console.log("Answering question");
-
-        //TODO Dispatch answering the question
-        //TODO reset state? navigate away?
-
-    };
 
     render() {
 
-        const {question, loggedInUser} = this.props;
+        const{question, loggedInUser} = this.props;
 
-        return (
+        let isAnswered = Object.keys(loggedInUser.answers).includes(question.id);
+
+        return(
             <div className="center">
-                <h2>Would you rather?</h2>
-                <br/>
-                <form className="question" onSubmit={this.handleSubmit}>
-                    <div>
-                        <input type="radio"
-                               checked={this.state.currentAnswer === question.optionOne}
-                               id="option1"
-                               name="option1"
-                               onChange={this.onAnswerChanged}
-                               value="option1"/>
-                        <label htmlFor="option1">{question.optionOne.text}</label>
-
-                        <h2>OR</h2>
-
-                        <input checked={this.state.currentAnswer === question.optionTwo}
-                               type="radio"
-                               id="option2"
-                               name="option2"
-                               onChange={this.onAnswerChanged}
-                               value="option2"/>
-                        <label htmlFor="option2">{question.optionTwo.text}</label>
-                    </div>
-
-                    <button className="btn"
-                            type="submit"
-                            disabled={!this.state.currentAnswer}>
-                        Submit
-                    </button>
-                </form>
-
+                {isAnswered ?
+                <QuestionDetail questionId={question.id} /> :
+                <Question questionId={question.id} />}
             </div>
         )
     }
-
 }
 
+function mapStateToProps({questions, loggedInUser}, props){
 
-function mapStateToProps({questions, loggedInUser}, props) {
+    const {questionId} = props.match.params;
 
-    //TODO Undo the comments and use real data when the store is hooked up
-    const {questionId} = props;
+    console.log(`questionId: ${questionId}`);
+    console.dir(props);
 
+    //TODO Replace with real loggedInUser
+
+    loggedInUser = {
+        id: 'sarahedo',
+            name: 'Sarah Edo',
+            avatarURL: 'https://tylermcginnis.com/would-you-rather/sarah.jpg',
+            answers: {
+            "8xf0y6ziyjabvozdd253nd": 'optionOne',
+                "6ni6ok3ym7mf1p33lnez": 'optionOne',
+                "am8ehyc8byjqgar0jgpub9": 'optionTwo',
+                "loxhs1bqm25b708cmbf3g": 'optionTwo'
+        },
+        questions: ['8xf0y6ziyjabvozdd253nd', 'am8ehyc8byjqgar0jgpub9']
+    };
 
     questions = {
         "8xf0y6ziyjabvozdd253nd": {
@@ -162,10 +128,12 @@ function mapStateToProps({questions, loggedInUser}, props) {
         },
     };
 
-    return {
+
+
+    return{
         question: questions[questionId],
-        loggedInUser,
+        loggedInUser
     }
 }
 
-export default connect(mapStateToProps)(Question)
+export default connect(mapStateToProps)(QuestionPage)

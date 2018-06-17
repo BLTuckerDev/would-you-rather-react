@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import QuestionDetail from "./QuestionDetail";
 import Question from "./Question";
 
+//TODO ORder polls from most recently created to least recently created
 
 class Home extends Component {
 
@@ -163,8 +164,8 @@ function mapStateToProps({questions, loggedInUser}) {
     const unansweredQuestions = Object.keys(questions)
         .filter((questionId) => !Object.keys(loggedInUser.answers).includes(questionId));
 
-    console.log(`answered count: ${answeredQuestions}`)
-    console.log(`unanswered count: ${unansweredQuestions}`)
+    console.log(`answered count: ${answeredQuestions}`);
+    console.log(`unanswered count: ${unansweredQuestions}`);
     return {
         answeredQuestions,
         unansweredQuestions

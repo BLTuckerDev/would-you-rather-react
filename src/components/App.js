@@ -10,6 +10,7 @@ import LoggedInUserInfo from "./LoggedInUserInfo";
 import Navigation from "./Navigation";
 import AddQuestion from "./AddQuestion";
 import Home from "./Home";
+import QuestionPage from "./QuestionPage";
 
 //TODO Review rubric one more time
 
@@ -28,9 +29,10 @@ class App extends Component {
                       {this.props.loading === true
                           ? null
                           : <div>
-                              <Route path="/leaderboard" exact component={Leaderboard}/>
-                              <Route path="/add" exact component={AddQuestion}/>
                               <Route path="/" exact component={Home}/>
+                              <Route path="/leaderboard" component={Leaderboard}/>
+                              <Route path="/add" component={AddQuestion}/>
+                              <Route path="/questions/:questionId" component={QuestionPage}/>
                           </div>}
 
                   </div>

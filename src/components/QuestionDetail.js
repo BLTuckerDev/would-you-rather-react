@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 
+//TODO Show the option selected by the currently logged in user
 
 class QuestionDetail extends Component {
 
@@ -152,7 +153,7 @@ function mapStateToProps({questions, users}, props) {
         },
     };
 
-    const {questionId} = props || props.match.params;
+    const {questionId} = props;
 
     Object.keys(users)
         .forEach((user) => console.log(`user: ${user}`))
