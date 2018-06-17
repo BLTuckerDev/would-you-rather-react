@@ -24,6 +24,12 @@ class Home extends Component {
         }))
     };
 
+    handleOnQuestionClick = (e, questionId) =>{
+        console.log("click");
+        e.preventDefault();
+        const {history} = this.props;
+        history.push(`/questions/${questionId}`)
+    }
 
     render() {
 
@@ -51,9 +57,11 @@ class Home extends Component {
                 <ul className="center">
                     {questionsToDisplay.map((questionId) => (
                         <li key={questionId}>
-                            {questionsToDisplay === answeredQuestions ?
-                                <QuestionDetail questionId={questionId}/> :
-                                <Question questionId={questionId}/>}
+                            <div onClick={(e) => this.handleOnQuestionClick(e, questionId)}>
+                                {questionsToDisplay === answeredQuestions ?
+                                    <QuestionDetail questionId={questionId}   /> :
+                                    <Question questionId={questionId}  />}
+                            </div>
                         </li>
                     ))}
                 </ul>
@@ -66,6 +74,8 @@ class Home extends Component {
 
 function mapStateToProps({questions, loggedInUser}) {
 
+    console.log("home map state");
+
     if(!questions){
         questions = [];
     }
@@ -76,8 +86,8 @@ function mapStateToProps({questions, loggedInUser}) {
     const unansweredQuestions = Object.keys(questions)
         .filter((questionId) => !Object.keys(loggedInUser ? loggedInUser.answers : {}).includes(questionId));
 
-    console.log(`answered count: ${answeredQuestions}`);
-    console.log(`unanswered count: ${unansweredQuestions}`);
+    console.dir(unansweredQuestions)
+    console.dir(answeredQuestions);
     return {
         loggedInUser,
         answeredQuestions,

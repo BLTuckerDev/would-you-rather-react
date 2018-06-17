@@ -1,20 +1,16 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 
-//TODO Show the option selected by the currently logged in user
-
 class QuestionDetail extends Component {
 
-    //TODO Handle 404 page here when question id is invalid
-
     render() {
-        const {question, optionOneVotes, optionTwoVotes, totalVotes} = this.props;
+        const {question, optionOneVotes, optionTwoVotes, totalVotes, loggedInUser} = this.props;
 
         return (
             <div className="center">
                 <h2>Would you rather?</h2>
                 <br/>
-                <div className="questionBox">
+                <div className={(loggedInUser.answers[question.id] === "optionOne" ? "answerBox" : "questionBox")}>
                     <h3>{question.optionOne.text}</h3>
                     <p>{`${(optionOneVotes/totalVotes) * 100}% of votes`}</p>
                     <p>{`Total Votes: ${optionOneVotes}`}</p>
@@ -22,7 +18,7 @@ class QuestionDetail extends Component {
                 <br/>
                 <h3>OR</h3>
                 <br/>
-                <div className="questionBox">
+                <div className={(loggedInUser.answers[question.id] === "optionTwo" ? "answerBox" : "questionBox")}>
                     <h3>{question.optionTwo.text}</h3>
                     <p>{`${(optionTwoVotes/totalVotes) * 100}% of votes`}</p>
                     <p>{`Total Votes: ${optionTwoVotes}`}</p>
@@ -33,7 +29,7 @@ class QuestionDetail extends Component {
 }
 
 
-function mapStateToProps({questions, users}, props) {
+function mapStateToProps({questions, users, loggedInUser}, props) {
     const {questionId} = props;
 
     Object.keys(users)
@@ -44,10 +40,9 @@ function mapStateToProps({questions, users}, props) {
         .filter(answers => answers[questionId])
         .length;
 
-    console.log(`Total Votes: ${totalVotes}`);
-
     const question = questions[questionId]
     return {
+        loggedInUser,
         question,
         optionOneVotes: question.optionOne.votes.length,
         optionTwoVotes: question.optionTwo.votes.length,

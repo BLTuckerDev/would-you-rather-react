@@ -164,3 +164,15 @@ li {
   transition: 0.3s;
   font-size: 17px;
 }
+
+.answerBox{
+  width: 100%;
+  max-width: 250px;
+  padding: 10px;
+  text-align: center;
+  margin: 0 auto;
+  border: 3px solid lawngreen;
+  border-radius: 3px;
+  cursor: pointer;
+
+}

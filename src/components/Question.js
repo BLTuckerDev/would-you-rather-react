@@ -1,8 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-
-//TODO Show picture of whoever asked the question
-
+import {handleAnsweringAQuestion} from "../actions/Questions";
+import {withRouter} from "react-router-dom";
 
 class Question extends Component {
 
@@ -11,12 +10,8 @@ class Question extends Component {
     };
 
     onAnswerChanged = (e) => {
-        console.log("onAnswerChanged");
-        console.dir(e)
         this.setState({
-            currentAnswer: e.target.value === "option1"
-                ? this.props.question.optionOne
-                : this.props.question.optionTwo
+            currentAnswer: e.target.value
         });
     };
 
@@ -24,12 +19,11 @@ class Question extends Component {
         e.preventDefault();
 
         const {currentAnswer} = this.state;
+        const {question, history, dispatch} = this.props;
 
-        console.log("Answering question");
+        dispatch(handleAnsweringAQuestion(question, currentAnswer));
 
-        //TODO Dispatch answering the question
-        //TODO reset state? navigate away?
-
+        history.push("/")
     };
 
     render() {
@@ -39,26 +33,30 @@ class Question extends Component {
         return (
             <div className="center">
                 <h2>Would you rather?</h2>
+                <p>Asked By:</p>
+                <img src={loggedInUser.avatarURL}
+                     className="smallAvatar"
+                />
                 <br/>
                 <form className="question" onSubmit={this.handleSubmit}>
                     <div>
                         <input type="radio"
-                               checked={this.state.currentAnswer === question.optionOne}
-                               id="option1"
-                               name="option1"
+                               checked={this.state.currentAnswer === "optionOne"}
+                               id="optionOne"
+                               name="optionOne"
                                onChange={this.onAnswerChanged}
-                               value="option1"/>
-                        <label htmlFor="option1">{question.optionOne.text}</label>
+                               value="optionOne"/>
+                        <label htmlFor="optionOne">{question.optionOne.text}</label>
 
                         <h2>OR</h2>
 
-                        <input checked={this.state.currentAnswer === question.optionTwo}
+                        <input checked={this.state.currentAnswer === "optionTwo"}
                                type="radio"
-                               id="option2"
-                               name="option2"
+                               id="optionTwo"
+                               name="optionTwo"
                                onChange={this.onAnswerChanged}
-                               value="option2"/>
-                        <label htmlFor="option2">{question.optionTwo.text}</label>
+                               value="optionTwo"/>
+                        <label htmlFor="optionTwo">{question.optionTwo.text}</label>
                     </div>
 
                     <button className="btn"
@@ -85,4 +83,4 @@ function mapStateToProps({questions, loggedInUser}, props) {
     }
 }
 
-export default connect(mapStateToProps)(Question)
+export default withRouter(connect(mapStateToProps)(Question));

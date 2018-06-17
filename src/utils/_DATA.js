@@ -194,9 +194,9 @@ export function _saveQuestionAnswer ({ authedUser, qid, answer }) {
             votes: questions[qid][answer].votes.concat([authedUser])
           }
         }
-      }
+      };
 
-      res()
+      res({users,questions})
     }, 500)
   })
 }

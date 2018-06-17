@@ -15,7 +15,6 @@ export function loadInitialData() {
                 questions
             }))
             .then(({users, questions}) => {
-                console.dir(users);
                 dispatch(loadUsers(users));
                 dispatch(loadQuestions(questions));
                 dispatch(hideLoading())
