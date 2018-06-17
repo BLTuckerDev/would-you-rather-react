@@ -8,6 +8,9 @@ import Leaderboard from "./Leaderboard";
 import Question from "./Question";
 import LoggedInUserInfo from "./LoggedInUserInfo";
 import Navigation from "./Navigation";
+import AddQuestion from "./AddQuestion";
+
+//TODO Review rubric one more time
 
 class App extends Component {
   render() {
@@ -25,7 +28,7 @@ class App extends Component {
                           ? null
                           : <div>
                               <Route path="/leaderboard" exact component={Leaderboard}/>
-                              {/*<Route path="/add" exact component={}/>*/}
+                              <Route path="/add" exact component={AddQuestion}/>
                           </div>}
 
                   </div>
