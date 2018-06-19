@@ -2,20 +2,22 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import QuestionDetail from "./QuestionDetail";
 import Question from "./Question";
-import {Redirect} from "react-router-dom";
+import Login from "./Login";
 
 class QuestionPage extends Component {
 
 
     render() {
 
-        const{question, loggedInUser, users} = this.props;
+        const {question, loggedInUser, users} = this.props;
 
-        if(!loggedInUser){
-            return <Redirect to="/login"/>
+        if (!loggedInUser) {
+            return (
+                <Login/>
+            )
         }
 
-        if(!question){
+        if (!question) {
             return (
                 <div>
                     404 Question Not Found
@@ -26,7 +28,7 @@ class QuestionPage extends Component {
 
         let isAnswered = Object.keys(loggedInUser.answers).includes(question.id);
 
-        return(
+        return (
             <div className="center">
                 <p>Asked By:</p>
                 <img src={users[question.author].avatarURL}
@@ -34,18 +36,18 @@ class QuestionPage extends Component {
                 />
                 <br/>
                 {isAnswered ?
-                <QuestionDetail questionId={question.id} /> :
-                <Question questionId={question.id} />}
+                    <QuestionDetail questionId={question.id}/> :
+                    <Question questionId={question.id}/>}
             </div>
         )
     }
 }
 
-function mapStateToProps({questions, loggedInUser, users}, props){
+function mapStateToProps({questions, loggedInUser, users}, props) {
 
     const {questionId} = props.match.params;
 
-    return{
+    return {
         question: questions ? questions[questionId] : null,
         loggedInUser,
         users

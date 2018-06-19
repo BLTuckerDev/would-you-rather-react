@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
+import Login from "./Login";
 
 
 class Leaderboard extends Component {
@@ -7,7 +8,13 @@ class Leaderboard extends Component {
 
     render() {
 
-        const {users} = this.props;
+        const {users, loggedInUser} = this.props;
+
+        if(!loggedInUser){
+            return (
+                <Login/>
+            )
+        }
 
         return (
             <div className="center">
@@ -32,9 +39,10 @@ class Leaderboard extends Component {
 }
 
 
-function mapStateToProps({users}) {
+function mapStateToProps({users, loggedInUser}) {
 
     return {
+        loggedInUser,
         users: Object.keys(users)
             .map(userKey => users[userKey])
             .sort((a, b) => (Object.keys(b.answers).length + b.questions.length) - (Object.keys(a.answers).length + a.questions.length))

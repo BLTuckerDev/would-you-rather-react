@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import QuestionDetail from "./QuestionDetail";
 import Question from "./Question";
-import {Redirect} from "react-router-dom";
+import Login from "./Login";
 
 class Home extends Component {
 
@@ -22,7 +22,7 @@ class Home extends Component {
         }))
     };
 
-    handleOnQuestionClick = (e, questionId) =>{
+    handleOnQuestionClick = (e, questionId) => {
         e.preventDefault();
         const {history} = this.props;
         history.push(`/questions/${questionId}`)
@@ -35,8 +35,10 @@ class Home extends Component {
 
         const questionsToDisplay = currentTab === "answered" ? answeredQuestions : unansweredQuestions;
 
-        if(!loggedInUser){
-            return <Redirect to="/login"/>
+        if (!loggedInUser) {
+            return (
+                <Login/>
+            )
         }
 
 
@@ -56,8 +58,8 @@ class Home extends Component {
                         <li key={questionId}>
                             <div onClick={(e) => this.handleOnQuestionClick(e, questionId)}>
                                 {questionsToDisplay === answeredQuestions ?
-                                    <QuestionDetail questionId={questionId}   /> :
-                                    <Question questionId={questionId}  />}
+                                    <QuestionDetail questionId={questionId}/> :
+                                    <Question questionId={questionId}/>}
                             </div>
                         </li>
                     ))}
@@ -71,17 +73,17 @@ class Home extends Component {
 
 function mapStateToProps({questions, loggedInUser}) {
 
-    if(!questions){
+    if (!questions) {
         questions = [];
     }
 
     const answeredQuestions = Object.keys(questions)
         .filter((questionId) => Object.keys(loggedInUser ? loggedInUser.answers : {}).includes(questionId))
-        .sort((a,b) => questions[b].timestamp - questions[a].timestamp);
+        .sort((a, b) => questions[b].timestamp - questions[a].timestamp);
 
     const unansweredQuestions = Object.keys(questions)
         .filter((questionId) => !Object.keys(loggedInUser ? loggedInUser.answers : {}).includes(questionId))
-        .sort((a,b) => questions[b].timestamp - questions[a].timestamp);
+        .sort((a, b) => questions[b].timestamp - questions[a].timestamp);
 
     return {
         loggedInUser,

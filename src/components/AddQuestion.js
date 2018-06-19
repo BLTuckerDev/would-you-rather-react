@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
 import {handleAddingNewQuestion} from "../actions/Questions";
+import Login from "./Login";
 
 
 class AddQuestion extends Component {
@@ -49,7 +50,9 @@ class AddQuestion extends Component {
         const {loggedInUser} = this.props;
 
         if (!loggedInUser) {
-            return <Redirect to="/login"/>
+            return (
+                <Login/>
+            )
         }
 
         if (toHome === true) {

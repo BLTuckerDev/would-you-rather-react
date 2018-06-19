@@ -11,7 +11,9 @@ class Login extends Component {
 
         dispatch(setLoggedInUser(user));
 
-        history.push("/");
+        if(this.props.location && this.props.location.pathname && this.props.location.pathname.includes("/login")){
+            history.push("/")
+        }
     };
 
 
